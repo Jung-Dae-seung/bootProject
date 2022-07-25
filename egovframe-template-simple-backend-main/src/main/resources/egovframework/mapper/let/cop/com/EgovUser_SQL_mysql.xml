@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EgovUserDAO">
+
+	<resultMap id="UserList" type="egovframework.let.cop.com.service.UserVO">
+		<result property="uniqId" column="uniqId"/>
+		<result property="userTy" column="USER_TY"/>
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="userNm" column="USER_NM"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="areaNo" column="AREA_NO"/>
+		<result property="middleTelno" column="HOUSE_MIDDLE_TELNO"/>
+		<result property="endTelno" column="HOUSE_END_TELNO"/>
+		<result property="moblphonNo" column="MBTLNUM"/>
+		<result property="groupId" column="GROUP_ID"/>
+		<result property="sttus" column="EMPLYR_STTUS_CODE"/>
+		<result property="sbscrbDe" column="SBSCRB_DE"/>
+		<result property="userDeptNm" column="DEPT_NM"/>
+		<result property="authorNm" column="AUTHOR_NM"/>
+		<result property="lastLoginDate" column="LAST_LOGIN_DATE"/>
+		<result property="useYn" column="EMPLYR_STTUS_CODE"/>
+	</resultMap>
+
+	<select id="selectUserList" parameterType="egovframework.let.cop.com.service.UserVO" resultMap="UserList">
+		SELECT * 
+			FROM(
+		  		SELECT
+		             A.ESNTL_ID AS uniqId
+		             ,A.EMPLYR_ID
+		             ,A.USER_NM                	
+		             ,A.EMAIL_ADRES           	
+		             ,A.AREA_NO               	
+		             ,A.HOUSE_MIDDLE_TELNO    	
+		             ,A.HOUSE_END_TELNO       	
+		             ,A.MBTLNUM              	
+		             ,A.GROUP_ID              	
+		             ,A.EMPLYR_STTUS_CODE     	
+		             ,A.SBSCRB_DE             	
+		             ,A.DEPT_NM        			
+		             ,B.AUTHOR_NM 				
+		             ,A.EMPLYR_STTUS_CODE AS useYn
+		         FROM LETTNEMPLYRINFO A 
+		            , (SELECT A.SCRTY_DTRMN_TRGET_ID, A.AUTHOR_CODE, B.AUTHOR_NM , B.AUTHOR_DEPT_NM
+						 FROM dongsung.LETTNEMPLYRSCRTYESTBS A, LETTNAUTHORINFO B
+						WHERE A.AUTHOR_CODE = B.AUTHOR_CODE
+		    		  ) B
+		    	WHERE A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID
+		    	<if test="searchCnd != ''">
+			      AND B.AUTHOR_NM = #{searchCnd}
+				</if>
+		  )TB 
+		  WHERE 1=1
+		  <if test="searchUseYn != ''">
+		  	AND USEYN = #{searchUseYn}
+		  </if>
+		  <choose>
+		  	<when test="searchSrch == 1">
+		  		AND EMPLYR_ID LIKE CONCAT ('%', #{searchWrd},'%')
+		  	</when>
+		  	<when test="searchSrch == 2">
+		  		AND USER_NM LIKE CONCAT ('%', #{searchWrd},'%')
+		  	</when>
+		  </choose>
+		  LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+	
+	<select id="selectUserListCnt" parameterType="egovframework.let.cop.com.service.UserVO" resultType="java.lang.Integer">
+		SELECT 
+			COUNT(*) as cnt
+			FROM(
+		  		SELECT
+		             A.ESNTL_ID AS uniqId
+		             ,A.EMPLYR_ID
+		             ,A.USER_NM                	
+		             ,A.EMAIL_ADRES           	
+		             ,A.AREA_NO               	
+		             ,A.HOUSE_MIDDLE_TELNO    	
+		             ,A.HOUSE_END_TELNO       	
+		             ,A.MBTLNUM              	
+		             ,A.GROUP_ID              	
+		             ,A.EMPLYR_STTUS_CODE     	
+		             ,A.SBSCRB_DE             	
+		             ,A.DEPT_NM        			
+		             ,B.AUTHOR_NM 				
+		             ,A.EMPLYR_STTUS_CODE AS useYn
+		         FROM LETTNEMPLYRINFO A 
+		            , (SELECT A.SCRTY_DTRMN_TRGET_ID, A.AUTHOR_CODE, B.AUTHOR_NM , B.AUTHOR_DEPT_NM
+						 FROM dongsung.LETTNEMPLYRSCRTYESTBS A, LETTNAUTHORINFO B
+						WHERE A.AUTHOR_CODE = B.AUTHOR_CODE
+		    		  ) B
+		    	WHERE A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID
+		  )TB 
+		  WHERE 1=1
+	</select>
+	
+	<insert id="insertUserData" parameterType="Map">
+		INSERT INTO LETTNEMPLYRINFO 
+                (   
+                    EMPLYR_ID           ,
+                    ORGNZT_ID			,
+                    USER_NM           	,
+                    PASSWORD            ,
+                    EMAIL_ADRES         ,
+                    PSTINST_CODE        ,
+                    EMPLYR_STTUS_CODE   ,
+                    SBSCRB_DE           ,
+                    CRTFC_DN_VALUE      ,        
+               		AUTHOR_CODE			,
+               		PASSWORD_HINT		,
+               		PASSWORD_CNSR		,
+               		ESNTL_ID			,
+               		GROUP_ID			,
+               		DEPT_NM
+               )
+            VALUES (
+            		#{id}           		,
+            		'ORGNZT_0000000000000'	,
+	                #{userNm}				,
+	                #{password}         	,
+	                #{email}         		,
+	                '00000000'        		,
+	                'P'				   		,
+					SYSDATE()           	,
+	                ''      				,  	      
+	               	#{code}					,
+	               	''						,
+	               	''						,
+	               	#{uniqId}				,
+	               	'GROUP_00000000000000'	,
+               		#{deptNm}
+            )
+	</insert>
+	
+	<select id="selectUserDetail" parameterType="egovframework.let.cop.com.service.UserVO" resultMap="UserList">
+		SELECT 
+			EMPLYR_ID ,
+			USER_NM ,
+			PASSWORD ,
+			DEPT_NM 
+		FROM LETTNEMPLYRINFO
+		WHERE EMPLYR_ID LIKE CONCAT('%', #{emplyrId}, '%')
+	</select>
+
+</mapper>

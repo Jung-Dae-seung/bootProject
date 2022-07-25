@@ -128,6 +128,7 @@ function EgovHeader({ loginUser, onChangeLogin }) {
                                 <li><NavLink to={URL.ADMIN_USAGE} activeClassName="cur">게시판사용관리</NavLink></li>
                                 <li><NavLink to={URL.ADMIN_NOTICE} activeClassName="cur">공지사항관리</NavLink></li>
                                 <li><NavLink to={URL.ADMIN_GALLERY} activeClassName="cur">사이트갤러리관리</NavLink></li>
+                                <li><NavLink to={URL.ADMIN_LOG} activeClassName="cur">로그관리</NavLink></li>
                             </ul>
                         </div>
                     }
@@ -185,6 +186,7 @@ function EgovHeader({ loginUser, onChangeLogin }) {
                                 <li><NavLink to={URL.ADMIN_USAGE} activeClassName="cur">게시판사용관리</NavLink></li>
                                 <li><NavLink to={URL.ADMIN_NOTICE} activeClassName="cur">공지사항관리</NavLink></li>
                                 <li><NavLink to={URL.ADMIN_GALLERY} activeClassName="cur">사이트갤러리관리</NavLink></li>
+                                <li><NavLink to={URL.ADMIN_LOG} activeClassName="cur">로그관리</NavLink></li>
                             </ul>
                         </>
                     }

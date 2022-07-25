@@ -66,6 +66,12 @@ import EgovAdminGalleryList from 'egov/admin/gallery/EgovAdminGalleryList';
 import EgovAdminGalleryDetail from 'egov/admin/gallery/EgovAdminGalleryDetail';
 import EgovAdminGalleryEdit from 'egov/admin/gallery/EgovAdminGalleryEdit';
 
+import EgovAdminLogList from 'egov/admin/log/EgovAdminLogList';
+
+import EgovAdminUserList from 'egov/admin/user/EgovAdminUserList';
+import EgovAdminUserEdit from 'egov/admin/user/EgovAdminUserEdit';
+import EgovAdminUserDetail from 'egov/admin/user/EgovAdminUserDetail';
+
 import './js/ui';
 
 import './css/base.css';
@@ -173,6 +179,12 @@ function App() {
             <Route path={URL.ADMIN_GALLERY_CREATE} render={() => <EgovAdminGalleryEdit mode={CODE.MODE_CREATE} />} />
             <Route path={URL.ADMIN_GALLERY_MODIFY} render={() => <EgovAdminGalleryEdit mode={CODE.MODE_MODIFY} />} />
             <Route path={URL.ADMIN_GALLERY_REPLY} render={() => <EgovAdminGalleryEdit mode={CODE.MODE_REPLY} />} />
+            
+            <Route exact path={URL.ADMIN_LOG} render={() => <EgovAdminLogList />} />
+            
+            <Route exact path={URL.ADMIN_USER} render={() => <EgovAdminUserList />} />
+            <Route exact path={URL.ADMIN_USER_DETAIL} render={() => <EgovAdminUserDetail />} />
+            <Route exact path={URL.ADMIN_USER_EDIT} render={() => <EgovAdminUserEdit mode={CODE.MODE_CREATE}/>} />
 
           </Switch>
           <EgovFooter></EgovFooter>

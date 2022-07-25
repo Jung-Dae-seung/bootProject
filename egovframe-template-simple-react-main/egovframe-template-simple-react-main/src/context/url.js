@@ -77,6 +77,11 @@ const URL = {
     ADMIN_GALLERY_MODIFY        : "/admin/gallery/modify", // 사이트관리/사이트갤러리관리 수정
     ADMIN_GALLERY_REPLY         : "/admin/gallery/reply", // 사이트관리/사이트갤러리관리 답글 등록
     
+    ADMIN_LOG					: "/admin/log", // 사이트관리/로그관리
+    
+    ADMIN_USER					: "/admin/user/", // 사이트관리/사용자관리
+    ADMIN_USER_CREATE			: "/admin/user/create", // 사이트관리/사용자관리 등록
+    ADMIN_USER_DETAIL			: "/admin/user/detail", // 사이트관리/사용자관리 등록
 }
 
 export default URL;
